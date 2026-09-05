@@ -1,8 +1,23 @@
-const codespaceName = import.meta.env.VITE_CODESPACE_NAME
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim()
+const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim()
 
-export const apiBaseUrl = codespaceName
-  ? `https://${codespaceName}-8000.app.github.dev/api`
-  : 'http://localhost:8000/api'
+function getApiBaseUrl() {
+  if (configuredApiBaseUrl) return configuredApiBaseUrl.replace(/\/$/, '')
+  if (codespaceName) return `https://${codespaceName}-8000.app.github.dev/api`
+
+  if (typeof window !== 'undefined') {
+    const { hostname, origin, protocol } = window.location
+    const codespaceHost = hostname.match(/^(.*)-5173(\..+)$/)
+    if (codespaceHost) return `${protocol}//${codespaceHost[1]}-8000${codespaceHost[2]}/api`
+    if (hostname === 'localhost' || hostname === '127.0.0.1') return 'http://localhost:8000/api'
+    return `${origin}/api`
+  }
+
+  return 'http://localhost:8000/api'
+}
+
+export const apiBaseUrl = getApiBaseUrl()
+const pendingRequests = new Map()
 
 export function collectionFrom(payload) {
   if (Array.isArray(payload)) return payload
@@ -13,7 +28,16 @@ export function collectionFrom(payload) {
 }
 
 export async function getCollection(endpoint) {
-  const response = await fetch(`${apiBaseUrl}/${endpoint}`)
-  if (!response.ok) throw new Error(`Could not load ${endpoint}`)
-  return collectionFrom(await response.json())
+  if (pendingRequests.has(endpoint)) return pendingRequests.get(endpoint)
+
+  const request = fetch(`${apiBaseUrl}/${endpoint}`)
+    .then((response) => {
+      if (!response.ok) throw new Error(`Could not load ${endpoint}`)
+      return response.json()
+    })
+    .then(collectionFrom)
+    .finally(() => pendingRequests.delete(endpoint))
+
+  pendingRequests.set(endpoint, request)
+  return request
 }

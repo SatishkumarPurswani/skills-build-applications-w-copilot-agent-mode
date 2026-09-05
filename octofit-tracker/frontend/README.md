@@ -8,7 +8,13 @@ The Vite app reads `VITE_CODESPACE_NAME` from the environment when it builds. In
 VITE_CODESPACE_NAME=your-codespace-name
 ```
 
-The frontend then calls `https://$VITE_CODESPACE_NAME-8000.app.github.dev/api/[component]`. When `VITE_CODESPACE_NAME` is unset, it safely falls back to `http://localhost:8000/api` for local development. Restart Vite after changing `.env.local`.
+The frontend then calls `https://$VITE_CODESPACE_NAME-8000.app.github.dev/api/[component]`. You can also set `VITE_API_BASE_URL` when production uses a different API host:
+
+```env
+VITE_API_BASE_URL=https://api.example.com/api
+```
+
+When `VITE_CODESPACE_NAME` is unset, the app derives the backend host from a Codespaces frontend hostname ending in `-5173.app.github.dev`, uses the current origin for a same-host deployment, and only uses `http://localhost:8000/api` on localhost. Requests already in flight are shared, so React Strict Mode does not issue duplicate network calls. Restart Vite after changing `.env.local`.
 
 ## Development
 
