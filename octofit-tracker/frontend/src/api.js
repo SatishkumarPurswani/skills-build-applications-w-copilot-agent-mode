@@ -24,13 +24,15 @@ export function collectionFrom(payload) {
   if (Array.isArray(payload?.data)) return payload.data
   if (Array.isArray(payload?.items)) return payload.items
   if (Array.isArray(payload?.results)) return payload.results
+  if (Array.isArray(payload?.data?.items)) return payload.data.items
+  if (Array.isArray(payload?.data?.results)) return payload.data.results
   return []
 }
 
 export async function getCollection(endpoint) {
   if (pendingRequests.has(endpoint)) return pendingRequests.get(endpoint)
 
-  const request = fetch(`${apiBaseUrl}/${endpoint}`)
+  const request = fetch(`${apiBaseUrl}/${endpoint.replace(/^\/+|\/+$/g, '')}/`)
     .then((response) => {
       if (!response.ok) throw new Error(`Could not load ${endpoint}`)
       return response.json()
