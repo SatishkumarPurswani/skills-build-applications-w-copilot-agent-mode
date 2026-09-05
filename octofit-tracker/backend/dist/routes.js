@@ -6,7 +6,7 @@ const router = (0, express_1.Router)();
 router.get('/', (_request, response) => {
     response.json({ service: 'octofit-tracker-api', status: 'ok' });
 });
-router.get('/users', async (_request, response, next) => {
+router.get('/users/', async (_request, response, next) => {
     try {
         response.json(await models_1.User.find().sort({ name: 1 }));
     }
@@ -14,7 +14,7 @@ router.get('/users', async (_request, response, next) => {
         next(error);
     }
 });
-router.post('/users', async (request, response, next) => {
+router.post('/users/', async (request, response, next) => {
     try {
         const user = await models_1.User.create(request.body);
         response.status(201).json(user);
@@ -23,7 +23,7 @@ router.post('/users', async (request, response, next) => {
         next(error);
     }
 });
-router.get('/teams', async (_request, response, next) => {
+router.get('/teams/', async (_request, response, next) => {
     try {
         response.json(await models_1.Team.find().populate('members', 'name email avatar').sort({ name: 1 }));
     }
@@ -31,7 +31,7 @@ router.get('/teams', async (_request, response, next) => {
         next(error);
     }
 });
-router.post('/teams', async (request, response, next) => {
+router.post('/teams/', async (request, response, next) => {
     try {
         const team = await models_1.Team.create(request.body);
         response.status(201).json(team);
@@ -40,7 +40,7 @@ router.post('/teams', async (request, response, next) => {
         next(error);
     }
 });
-router.get('/activities', async (_request, response, next) => {
+router.get('/activities/', async (_request, response, next) => {
     try {
         response.json(await models_1.Activity.find().populate('user', 'name avatar').sort({ date: -1 }));
     }
@@ -48,7 +48,7 @@ router.get('/activities', async (_request, response, next) => {
         next(error);
     }
 });
-router.post('/activities', async (request, response, next) => {
+router.post('/activities/', async (request, response, next) => {
     try {
         const activity = await models_1.Activity.create(request.body);
         response.status(201).json(await activity.populate('user', 'name avatar'));
@@ -57,7 +57,7 @@ router.post('/activities', async (request, response, next) => {
         next(error);
     }
 });
-router.get('/leaderboard', async (_request, response, next) => {
+router.get('/leaderboard/', async (_request, response, next) => {
     try {
         const leaderboard = await models_1.Activity.aggregate([
             { $group: { _id: '$user', points: { $sum: '$points' }, activities: { $sum: 1 } } },
@@ -72,7 +72,7 @@ router.get('/leaderboard', async (_request, response, next) => {
         next(error);
     }
 });
-router.get('/workouts', async (_request, response, next) => {
+router.get('/workouts/', async (_request, response, next) => {
     try {
         response.json(await models_1.Workout.find().sort({ difficulty: 1, title: 1 }));
     }
@@ -80,7 +80,7 @@ router.get('/workouts', async (_request, response, next) => {
         next(error);
     }
 });
-router.post('/workouts', async (request, response, next) => {
+router.post('/workouts/', async (request, response, next) => {
     try {
         const workout = await models_1.Workout.create(request.body);
         response.status(201).json(workout);

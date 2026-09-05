@@ -7,7 +7,7 @@ router.get('/', (_request, response) => {
   response.json({ service: 'octofit-tracker-api', status: 'ok' });
 });
 
-router.get('/users', async (_request, response, next) => {
+router.get('/users/', async (_request, response, next) => {
   try {
     response.json(await User.find().sort({ name: 1 }));
   } catch (error) {
@@ -15,7 +15,7 @@ router.get('/users', async (_request, response, next) => {
   }
 });
 
-router.post('/users', async (request, response, next) => {
+router.post('/users/', async (request, response, next) => {
   try {
     const user = await User.create(request.body);
     response.status(201).json(user);
@@ -24,7 +24,7 @@ router.post('/users', async (request, response, next) => {
   }
 });
 
-router.get('/teams', async (_request, response, next) => {
+router.get('/teams/', async (_request, response, next) => {
   try {
     response.json(await Team.find().populate('members', 'name email avatar').sort({ name: 1 }));
   } catch (error) {
@@ -32,7 +32,7 @@ router.get('/teams', async (_request, response, next) => {
   }
 });
 
-router.post('/teams', async (request, response, next) => {
+router.post('/teams/', async (request, response, next) => {
   try {
     const team = await Team.create(request.body);
     response.status(201).json(team);
@@ -41,7 +41,7 @@ router.post('/teams', async (request, response, next) => {
   }
 });
 
-router.get('/activities', async (_request, response, next) => {
+router.get('/activities/', async (_request, response, next) => {
   try {
     response.json(await Activity.find().populate('user', 'name avatar').sort({ date: -1 }));
   } catch (error) {
@@ -49,7 +49,7 @@ router.get('/activities', async (_request, response, next) => {
   }
 });
 
-router.post('/activities', async (request, response, next) => {
+router.post('/activities/', async (request, response, next) => {
   try {
     const activity = await Activity.create(request.body);
     response.status(201).json(await activity.populate('user', 'name avatar'));
@@ -58,7 +58,7 @@ router.post('/activities', async (request, response, next) => {
   }
 });
 
-router.get('/leaderboard', async (_request, response, next) => {
+router.get('/leaderboard/', async (_request, response, next) => {
   try {
     const leaderboard = await Activity.aggregate([
       { $group: { _id: '$user', points: { $sum: '$points' }, activities: { $sum: 1 } } },
@@ -73,7 +73,7 @@ router.get('/leaderboard', async (_request, response, next) => {
   }
 });
 
-router.get('/workouts', async (_request, response, next) => {
+router.get('/workouts/', async (_request, response, next) => {
   try {
     response.json(await Workout.find().sort({ difficulty: 1, title: 1 }));
   } catch (error) {
@@ -81,7 +81,7 @@ router.get('/workouts', async (_request, response, next) => {
   }
 });
 
-router.post('/workouts', async (request, response, next) => {
+router.post('/workouts/', async (request, response, next) => {
   try {
     const workout = await Workout.create(request.body);
     response.status(201).json(workout);
