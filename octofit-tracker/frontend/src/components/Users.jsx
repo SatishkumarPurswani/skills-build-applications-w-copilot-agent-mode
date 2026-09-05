@@ -5,6 +5,7 @@ import { DataPage, EmptyState } from './Activities'
 function Users() {
   const [users, setUsers] = useState([])
   const [error, setError] = useState('')
+  //-8000.app.github.dev/api/users
   useEffect(() => { getCollection('/api/users/').then(setUsers).catch((requestError) => setError(requestError.message)) }, [])
 
   return <DataPage eyebrow="THE CREW" title="People" error={error}>

@@ -5,6 +5,7 @@ import { DataPage, EmptyState } from './Activities'
 function Leaderboard() {
   const [entries, setEntries] = useState([])
   const [error, setError] = useState('')
+  //-8000.app.github.dev/api/leaderboard
   useEffect(() => { getCollection('/api/leaderboard/').then(setEntries).catch((requestError) => setError(requestError.message)) }, [])
 
   return <DataPage eyebrow="TEAM PULSE" title="Leaderboard" error={error}>

@@ -5,6 +5,7 @@ import { DataPage, EmptyState } from './Activities'
 function Workouts() {
   const [workouts, setWorkouts] = useState([])
   const [error, setError] = useState('')
+  //-8000.app.github.dev/api/workouts
   useEffect(() => { getCollection('/api/workouts/').then(setWorkouts).catch((requestError) => setError(requestError.message)) }, [])
 
   return <DataPage eyebrow="YOUR NEXT SESSION" title="Workouts" error={error}>

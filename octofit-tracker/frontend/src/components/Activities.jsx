@@ -5,6 +5,7 @@ function Activities() {
   const [activities, setActivities] = useState([])
   const [error, setError] = useState('')
 
+  //-8000.app.github.dev/api/activities
   useEffect(() => {
     getCollection('/api/activities/').then(setActivities).catch((requestError) => setError(requestError.message))
   }, [])

@@ -5,6 +5,7 @@ import { DataPage, EmptyState } from './Activities'
 function Teams() {
   const [teams, setTeams] = useState([])
   const [error, setError] = useState('')
+  //-8000.app.github.dev/api/teams
   useEffect(() => { getCollection('/api/teams/').then(setTeams).catch((requestError) => setError(requestError.message)) }, [])
 
   return <DataPage eyebrow="COLLECTIVE ENERGY" title="Teams" error={error}>
