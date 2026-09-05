@@ -5,7 +5,7 @@ import { DataPage, EmptyState } from './Activities'
 function Teams() {
   const [teams, setTeams] = useState([])
   const [error, setError] = useState('')
-  useEffect(() => { getCollection('teams').then(setTeams).catch((requestError) => setError(requestError.message)) }, [])
+  useEffect(() => { getCollection('/api/teams/').then(setTeams).catch((requestError) => setError(requestError.message)) }, [])
 
   return <DataPage eyebrow="COLLECTIVE ENERGY" title="Teams" error={error}>
     <div className="card-grid">{teams.map((team) => <article className="info-card" key={team._id}>

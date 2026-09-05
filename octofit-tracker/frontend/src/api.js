@@ -32,7 +32,14 @@ export function collectionFrom(payload) {
 export async function getCollection(endpoint) {
   if (pendingRequests.has(endpoint)) return pendingRequests.get(endpoint)
 
-  const request = fetch(`${apiBaseUrl}/${endpoint.replace(/^\/+|\/+$/g, '')}/`)
+  const normalizedEndpoint = endpoint.startsWith('/api/')
+    ? endpoint.replace(/\/+$/, '') + '/'
+    : `${apiBaseUrl}/${endpoint.replace(/^\/+|\/+$/g, '')}/`
+  const request = fetch(
+    normalizedEndpoint.startsWith('/api/')
+      ? `${apiBaseUrl.replace(/\/api\/?$/, '')}${normalizedEndpoint}`
+      : normalizedEndpoint,
+  )
     .then((response) => {
       if (!response.ok) throw new Error(`Could not load ${endpoint}`)
       return response.json()

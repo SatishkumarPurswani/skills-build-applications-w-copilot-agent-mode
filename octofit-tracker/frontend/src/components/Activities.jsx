@@ -6,7 +6,7 @@ function Activities() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    getCollection('activities').then(setActivities).catch((requestError) => setError(requestError.message))
+    getCollection('/api/activities/').then(setActivities).catch((requestError) => setError(requestError.message))
   }, [])
 
   return <DataPage eyebrow="MOVEMENT LOG" title="Activities" error={error}>

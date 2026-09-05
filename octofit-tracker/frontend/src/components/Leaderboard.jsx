@@ -5,7 +5,7 @@ import { DataPage, EmptyState } from './Activities'
 function Leaderboard() {
   const [entries, setEntries] = useState([])
   const [error, setError] = useState('')
-  useEffect(() => { getCollection('leaderboard').then(setEntries).catch((requestError) => setError(requestError.message)) }, [])
+  useEffect(() => { getCollection('/api/leaderboard/').then(setEntries).catch((requestError) => setError(requestError.message)) }, [])
 
   return <DataPage eyebrow="TEAM PULSE" title="Leaderboard" error={error}>
     <div className="ranking-list">{entries.map((entry, index) => <div className="ranking-row" key={entry.user?._id || entry._id}>

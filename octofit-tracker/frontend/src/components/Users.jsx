@@ -5,7 +5,7 @@ import { DataPage, EmptyState } from './Activities'
 function Users() {
   const [users, setUsers] = useState([])
   const [error, setError] = useState('')
-  useEffect(() => { getCollection('users').then(setUsers).catch((requestError) => setError(requestError.message)) }, [])
+  useEffect(() => { getCollection('/api/users/').then(setUsers).catch((requestError) => setError(requestError.message)) }, [])
 
   return <DataPage eyebrow="THE CREW" title="People" error={error}>
     <div className="people-grid">{users.map((user) => <article className="person-row" key={user._id}>

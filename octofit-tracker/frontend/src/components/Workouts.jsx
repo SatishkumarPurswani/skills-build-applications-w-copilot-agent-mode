@@ -5,7 +5,7 @@ import { DataPage, EmptyState } from './Activities'
 function Workouts() {
   const [workouts, setWorkouts] = useState([])
   const [error, setError] = useState('')
-  useEffect(() => { getCollection('workouts').then(setWorkouts).catch((requestError) => setError(requestError.message)) }, [])
+  useEffect(() => { getCollection('/api/workouts/').then(setWorkouts).catch((requestError) => setError(requestError.message)) }, [])
 
   return <DataPage eyebrow="YOUR NEXT SESSION" title="Workouts" error={error}>
     <div className="card-grid">{workouts.map((workout) => <article className="info-card workout-card" key={workout._id}>
